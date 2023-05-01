@@ -1,9 +1,16 @@
 version: 0.2
 
+env:
+  variables:
+    AWS_DEFAULT_REGION: ap-northeast-2
+    AWS_ACCOUNT_ID: 329892515892
+    IMAGE_REPO_NAME: my-web-image
+    IMAGE_TAG: latest
+
 phases:
   build:
     commands:
-      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/q5s4z6w3
-      - docker build -t my-image-registry .
-      - docker tag my-image-registry:latest public.ecr.aws/q5s4z6w3/my-image-registry:latest
-      - docker push public.ecr.aws/q5s4z6w3/my-image-registry:latest
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - docker build --platform=linux/amd64 -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
