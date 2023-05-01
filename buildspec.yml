@@ -4,9 +4,6 @@ phases:
   build:
     commands:
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com
-      - docker build -t my-image-registry .
-      - docker tag my-image-registry:latest 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-image-registry:latest
-      - docker push 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-image-registry:latest
-      - printf '[{"name":"my-web","imageUri":"%s"}]' 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-image-registry:latest > imagedefinitions.json
-artifacts:
-  files: imagedefinitions.json
+      - docker build -t my-web .
+      - docker tag my-web:latest 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-web:latest
+      - docker push 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-web:latest
