@@ -7,3 +7,6 @@ phases:
       - docker build -t my-web .
       - docker tag my-web:latest 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-web:latest
       - docker push 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-web:latest
+      - printf '[{"name":"my-web","imageUri":"%s"}]' 329892515892.dkr.ecr.ap-northeast-2.amazonaws.com/my-web:latest > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
